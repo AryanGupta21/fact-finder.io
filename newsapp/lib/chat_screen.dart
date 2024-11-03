@@ -43,7 +43,27 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FactCheck.io'),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/image.png', // Your RV logo image
+              height: 40,
+            ),
+            const SizedBox(
+              width: 200, // Set your desired width
+              child: Text(
+                'RV CHECKER',
+                selectionColor: Colors.black,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24, // Adjust font size as needed
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: const Color.fromARGB(
+            255, 6, 68, 130), // AppBar theme color changed to blue
       ),
       body: Column(
         children: [

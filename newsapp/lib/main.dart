@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'FactCheck.io',
+      title: 'RV Checker ',
       theme: ThemeData(
         primarySwatch: Colors.brown, // Using a neutral color scheme
       ),
