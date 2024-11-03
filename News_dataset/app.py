@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
+import os
 
 app = Flask(__name__)
 
@@ -25,6 +26,18 @@ X_train, X_test, y_train, y_test = train_test_split(df['text'], df['label'], tes
 model = make_pipeline(TfidfVectorizer(), MultinomialNB())
 model.fit(X_train, y_train)
 
+# Create an Excel writer object
+output_file = 'news_predictions.xlsx'
+
+# Check if the file exists to load existing data
+if os.path.exists(output_file):
+    existing_df = pd.read_excel(output_file)
+    true_news = existing_df['True News'].dropna().tolist()
+    fake_news = existing_df['Fake News'].dropna().tolist()
+else:
+    true_news = []
+    fake_news = []
+
 
 # API endpoint for predictions
 @app.route('/predict', methods=['POST'])
@@ -36,11 +49,24 @@ def predict():
     prediction = model.predict([news_article])
 
     result = "true" if prediction[0] == 0 else "fake"
+
+    # Categorize and save the news article
+    if result == "true":
+        true_news.append(news_article)
+    else:
+        fake_news.append(news_article)
+
+    # Create a DataFrame to store the categorized news
+    categorized_df = pd.DataFrame({
+        'True News': pd.Series(true_news),
+        'Fake News': pd.Series(fake_news)
+    })
+
+    # Write to an Excel file
+    categorized_df.to_excel(output_file, index=False)
+
     return jsonify({"prediction": result})
 
-
-# if __name__ == '__main__':
-#     app.run(debug=True, port=5000)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
