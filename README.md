@@ -1,4 +1,5 @@
 Fact-Finder.io 🌐
+
 A Flutter-based application with AI-powered news verification to combat misinformation.
 
 Fact-Finder.io empowers users to verify the credibility of news articles. With a sleek chat interface, it connects to a Python backend powered by a machine-learning model that classifies news as either True or Fake.
